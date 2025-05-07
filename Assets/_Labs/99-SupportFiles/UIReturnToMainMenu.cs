@@ -1,18 +1,18 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Collections;
 
 public class UIReturnToMainMenu : MonoBehaviour
 {
-    //todo: dtermine if I want to set up different return points from this prefab
+    // Optional: Reference to the menu GameObject (set in Inspector or dynamically)
     private GameObject returnMenu;
-    //public GameObject fpsController;
 
-
-    public void Awake()
+    void Awake()
     {
-       
-        //returnMenu.SetActive(false);
+        // Optional: preload the menu object if it exists
+        returnMenu = GameObject.Find("ReturnToMenu-Equals");
+
+        // Optionally disable it on start
+        // if (returnMenu != null) returnMenu.SetActive(false);
     }
 
     public void ReturnToMainMenu()
@@ -20,18 +20,27 @@ public class UIReturnToMainMenu : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 
-
-    // Update is called once per frame
-    public void Update()
+    void Update()
     {
-        if ((Input.GetKeyDown(KeyCode.Mouse0)))
+        if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            GameObject.Find("ReturnToMenu-Equals").SetActive(false);
-            
+            // Safe check before using SetActive
+            if (returnMenu == null)
+            {
+                returnMenu = GameObject.Find("ReturnToMenu-Equals");
+            }
 
+            if (returnMenu != null)
+            {
+                returnMenu.SetActive(false);
+            }
+            else
+            {
+                Debug.LogWarning("UIReturnToMainMenu: Could not find 'ReturnToMenu-Equals' GameObject.");
+            }
         }
 
-        if ((Input.GetKeyDown(KeyCode.Equals)))
+        if (Input.GetKeyDown(KeyCode.Equals))
         {
             ReturnToMainMenu();
         }
